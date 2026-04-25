@@ -1,0 +1,3 @@
+
+--- Vuln Report for https://www.google.com ---
+- Missing Content-Security-Policy: Risk Data Injection
