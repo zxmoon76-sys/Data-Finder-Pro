@@ -1,111 +1,106 @@
-#!/usr/bin/env python3
 import os
-import time
+import hashlib
 import requests
 import socket
-import re
-from urllib.parse import urlparse
 
 # কালার কোড
-G = '\033[1;32m'
-Y = '\033[1;33m'
-R = '\033[1;31m'
-B = '\033[1;34m'
-C = '\033[1;36m'
-W = '\033[0m'
+GREEN = '\033[92m'
+RED = '\033[91m'
+YELLOW = '\033[93m'
+CYAN = '\033[96m'
+RESET = '\033[0m'
 
-def banner():
-    os.system('clear')
-    print(f"{C}")
-    print(r"    ██████╗  █████╗ ████████╗ █████╗     ██████╗ ██████╗  ██████╗")
-    print(r"    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗    ██╔══██╗██╔══██╗██╔═══██╗")
-    print(r"    ██║  ██║███████║   ██║   ███████║    ██████╔╝██████╔╝██║   ██║")
-    print(r"    ██║  ██║██╔══██║   ██║   ██╔══██║    ██╔═══╝ ██╔══██╗██║   ██║")
-    print(r"    ██████╔╝██║  ██║   ██║   ██║  ██║    ██║     ██║  ██║╚██████╔╝")
-    print(r"    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚═╝     ╚═╝  ╚═╝ ╚═════╝")
-    print(f"           {Y}[ ULTIMATE VULNERABILITY & DATA SCANNER ] - BY: MAMUN{W}")
-    print(f"{B}    --------------------------------------------------------------{W}")
+class DataFinderPro:
+    def __init__(self):
+        self.headers_to_check = ["X-Frame-Options", "Content-Security-Policy", "X-Content-Type-Options"]
+        self.malware_signatures = ["5d41402abc4b2a76b9719d911017c592"]
 
-def vul_check(url):
-    print(f"\n{Y}[*] Deep Vulnerability Scan & Fuzzing Started...{W}")
-    report = f"\n--- Vuln Report for {url} ---"
-    
-    # ১. হেডার অ্যানালাইসিস (Security Gap)
-    try:
-        res = requests.get(url, timeout=5)
-        headers = res.headers
-        print(f"{B}[+] Server: {headers.get('Server', 'Hidden')}{W}")
-        
-        vulnerabilities = {
-            'X-Frame-Options': 'Clickjacking Attack',
-            'X-XSS-Protection': 'Cross-Site Scripting (XSS)',
-            'Content-Security-Policy': 'Data Injection'
-        }
-        
-        for h, risk in vulnerabilities.items():
-            if h not in headers:
-                print(f"{R}[!] WARNING: {h} is MISSING! Risk: {risk}{W}")
-                report += f"\n- Missing {h}: Risk {risk}"
-    except:
-        print(f"{R}[!] Connection error during header check.{W}")
+    def show_banner(self):
+        # সিনট্যাক্স এরর ঠিক করতে r বসানো হয়েছে
+        banner = fr"""{CYAN}
+  _____       _        ______ _           _           _____           
+ |  __ \     | |      |  ____(_)         | |         |  __ \          
+ | |  | | ___| |_ __ _| |__   _ _ __   __| | ___ _ __| |__) | __ ___  
+ | |  | |/ _ \ __/ _` |  __| | | '_ \ / _` |/ _ \ '__|  ___/ '__/ _ \ 
+ | |__| |  __/ || (_| | |    | | | | | (_| |  __/ |  | |   | | | (_) |
+ |_____/ \___|\__\__,_|_|    |_|_| |_|\__,_|\___|_|  |_|   |_|  \___/ 
+{YELLOW}
+        [+--- Natespo Advanced Security Framework v2.1 ---+]
+        [+--- Added Module: Password Cracker Logic     ---+]
+{RESET}"""
+        print(banner)
 
-    # ২. অটোমেটেড ফিউজিং / পেলোড টেস্টিং (Simple Payload Test)
-    print(f"{Y}[*] Testing Payloads on Target...{W}")
-    payloads = ["' OR 1=1 --", "<script>alert(1)</script>", "../etc/passwd"]
-    
-    for p in payloads:
+    # মডিউল ১: ওয়েবসাইট অডিট (NuGet Logic)
+    def audit_url(self, url):
+        print(f"\n{CYAN}[*] Web Audit: {url}{RESET}")
         try:
-            test_url = f"{url}?id={p}" if "?" not in url else f"{url}&test={p}"
-            r = requests.get(test_url, timeout=5)
-            if r.status_code == 500:
-                print(f"{R}[FOUND] Possible Vulnerability with payload: {p}{W}")
-                report += f"\n- Potential Bug with payload: {p}"
-            else:
-                print(f"{G}[SAFE] Payload {p} blocked/ignored.{W}")
+            res = requests.get(url, timeout=5)
+            for h in self.headers_to_check:
+                if h in res.headers:
+                    print(f"{GREEN}[✔] Secure: '{h}' found.{RESET}")
+                else:
+                    print(f"{RED}[✘] Missing: '{h}'!{RESET}")
         except:
-            pass
-    return report
+            print(f"{RED}[-] Error: Connection Failed.{RESET}")
 
-def save_report(data):
-    with open("final_report.txt", "a") as f:
-        f.write(data + "\n")
-    print(f"\n{G}[+] Full Report Saved to final_report.txt{W}")
+    # মডিউল ২: ফাইল ও পারমিশন স্ক্যান (Bypass Logic)
+    def scan_file(self, path):
+        try:
+            with open(path, "rb") as f:
+                file_hash = hashlib.md5(f.read()).hexdigest()
+                if file_hash in self.malware_signatures:
+                    return f"{RED}[✘] MALWARE: {path}{RESET}"
+                return f"{GREEN}[✔] SAFE: {path}{RESET}"
+        except PermissionError:
+            return f"{YELLOW}[!] BYPASSING: Permission Denied for {path}{RESET}"
+        except:
+            return f"{RED}[-] Error scanning: {path}{RESET}"
+
+    # মডিউল ৩: পাসওয়ার্ড ক্র্যাকার (Rockyou.txt Logic)
+    def crack_hash(self, target_hash, wordlist_path):
+        print(f"\n{CYAN}[*] Cracking MD5 Hash: {target_hash}{RESET}")
+        print(f"{YELLOW}[*] Using Wordlist: {wordlist_path}{RESET}\n")
+        try:
+            count = 0
+            with open(wordlist_path, 'r', encoding='latin-1') as f:
+                for line in f:
+                    word = line.strip()
+                    hashed_word = hashlib.md5(word.encode()).hexdigest()
+                    count += 1
+                    if count % 100000 == 0:
+                        print(f"[*] Checked {count} passwords...", end='\r')
+                    
+                    if hashed_word == target_hash:
+                        return f"\n{GREEN}[✔] SUCCESS! Password Found: {word}{RESET}"
+            return f"\n{RED}[✘] Failed: Password not found in worldist.{RESET}"
+        except FileNotFoundError:
+            return f"{RED}[-] Error: Rockyou.txt not found at the given path.{RESET}"
 
 def main():
-    banner()
-    print(f"{G}[1]{W} Full Security Audit (Vuln + Fuzzing + IP)")
-    print(f"{G}[2]{W} Read Saved Reports")
-    print(f"{R}[3]{W} Exit")
+    app = DataFinderPro()
+    app.show_banner()
     
-    choice = input(f"\n{C}Select Option: {W}")
+    print(f"{YELLOW}1. Web Security Audit")
+    print("2. Malware & Permission Scan")
+    print(f"3. Password Hash Cracker (MD5){RESET}")
     
-    if choice == '1':
-        target = input(f"\n{B}Enter URL (e.g. https://google.com): {W}")
-        if not target.startswith("http"): target = "https://" + target
-        
-        # IP & Port (সিম্পল ভার্সন)
-        domain = urlparse(target).netloc
-        try:
-            ip = socket.gethostbyname(domain)
-            print(f"{G}[+] Resolved IP: {ip}{W}")
-        except: pass
-        
-        # ভালনারেবিলিটি ও পেলোড চেক
-        v_report = vul_check(target)
-        save_report(v_report)
-        
-        name = input(f"\n{B}Enter Name for Lab Record: {W}")
-        print(f"\n{G}[SUCCESS] Mission Accomplished, Mamun!{W}")
-        
-    elif choice == '2':
-        if os.path.exists("final_report.txt"):
-            os.system("cat final_report.txt")
-        else: print(f"{R}No reports yet.{W}")
-        input("\nPress Enter...")
-        main()
-        
-    elif choice == '3':
-        exit()
+    choice = input(f"\n{CYAN}Select Option: {RESET}")
+    
+    if choice == "1":
+        target = input("Enter URL: ")
+        app.audit_url(target)
+    elif choice == "2":
+        path = input("Enter Path: ")
+        if os.path.isdir(path):
+            for root, dirs, files in os.walk(path):
+                for name in files:
+                    print(app.scan_file(os.path.join(root, name)))
+        else:
+            print(app.scan_file(path))
+    elif choice == "3":
+        t_hash = input("Enter MD5 Hash: ")
+        w_path = input("Enter Rockyou.txt Path: ")
+        print(app.crack_hash(t_hash, w_path))
 
 if __name__ == "__main__":
     main()
