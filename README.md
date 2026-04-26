@@ -31,11 +31,17 @@ DataFinderPro is a multi-functional security tool that works in both **Root** an
 
 ## 🛠️ Installation & Usage
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/zxmoon76-sys/Data-Finder-Pro.git](https://github.com/zxmoon76-sys/Data-Finder-Pro.git)
-   cd Data-Finder-Pro
-   pip install requests
-   
+```bash
+# Clone the repository
+git clone [https://github.com/zxmoon76-sys/Data-Finder-Pro.git](https://github.com/zxmoon76-sys/Data-Finder-Pro.git)
+
+# Enter the directory
+cd Data-Finder-Pro
+
+# Install dependencies
+pip install requests
+
+# Run the tool
 python finder.py
-This tool is developed for Educational Purposes only. Use it responsibly and only on systems you have permission to audit. The developer (Mamun)  is not responsible for any misuse.
+
+This tool is developed for Educational Purposes only. Use it responsibly and only on systems you have permission to audit. The developer (Mamun) is not responsible for any misuse.
