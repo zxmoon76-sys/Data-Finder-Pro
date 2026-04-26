@@ -1,29 +1,41 @@
-# 🚀 Data Finder Pro v4.0 🛡️
-**Ultimate Vulnerability & Data Scanner for Professionals**
+# 🛡️ DataFinderPro v2.3
+**Natespo Advanced Security Framework** - A modular and hybrid security auditing tool designed for Termux and Linux environments.
 
-Data Finder Pro is an advanced, terminal-based security research tool. It helps developers and security enthusiasts perform deep reconnaissance, network analysis, and data integrity audits on web targets.
-
-
-
-## ✨ Key Features
-- 🛡️ **Vulnerability Detection:** Identifies missing critical security headers (CSP, XSS-Protection, etc.).
-- 🛠️ **Payload Fuzzing:** Automated testing with common payloads (SQLi, XSS, Path Traversal) to find logic bugs.
-- 📡 **Network Reconnaissance:** Resolves target IP addresses and scans for open ports (80, 443, 21, 22).
-- 📋 **Detailed Auditing:** Verifies data integrity for name and email fields.
-- 📂 **Auto-Reporting:** Every scan is automatically logged into `final_report.txt`.
-- 🎨 **Pro UI:** Aesthetic ANSI color-coded interface for Termux and Linux.
+## 🚀 Overview
+DataFinderPro is a multi-functional security tool that works in both **Root** and **Non-Root** modes. Whether you are performing a web audit, scanning for malware, or analyzing local networks, this tool provides a comprehensive suite for security enthusiasts.
 
 ---
 
-## 📥 Installation
+## ✨ Features
+### 🌐 1. Web Security Audit
+- Checks for essential security headers (CSP, X-Frame-Options, etc.).
+- Identifies missing protections on target URLs.
 
-Follow these steps to install the tool in your environment:
+### 🛡️ 2. Malware & Permission Scan
+- Scans files for known malware signatures (MD5).
+- Detects permission-restricted files in the system.
 
-### Method 1: Standard Clone (Recommended)
-```bash
-git clone [https://github.com/zxmoon76-sys/Data-Finder-Pro.git](https://github.com/zxmoon76-sys/Data-Finder-Pro.git)
-cd Data-Finder-Pro
-chmod +x setup.sh
-./setup.sh
-pip install git+[https://github.com/zxmoon76-sys/Data-Finder-Pro.git](https://github.com/zxmoon76-sys/Data-Finder-Pro.git)
-data-finder
+### 🔑 3. Password Hash Cracker
+- High-speed MD5 hash cracking using wordlists like `Rockyou.txt`.
+- Optimized for mobile processing in Termux.
+
+### 📡 4. Network Analysis & Port Scan (New!)
+- Scans common ports (SSH, HTTP, DNS, etc.) to identify running services.
+- **Root Mode:** Displays the local ARP table and device MAC addresses.
+
+### 📶 5. Wi-Fi Password Dump (Root Only!)
+- Automatically detects root access.
+- Dumps saved Wi-Fi configurations and passwords from system directories.
+
+---
+
+## 🛠️ Installation & Usage
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/zxmoon76-sys/Data-Finder-Pro.git](https://github.com/zxmoon76-sys/Data-Finder-Pro.git)
+   cd Data-Finder-Pro
+   pip install requests
+   
+python finder.py
+This tool is developed for Educational Purposes only. Use it responsibly and only on systems you have permission to audit. The developer (Mamun)  is not responsible for any misuse.
